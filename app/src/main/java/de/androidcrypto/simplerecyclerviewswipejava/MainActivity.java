@@ -1,9 +1,11 @@
 package de.androidcrypto.simplerecyclerviewswipejava;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -20,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerViewAdapter recyclerViewAdapter;
     LinearLayoutManager linearLayoutManager;
 
+    SwipeController swipeController = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +37,25 @@ public class MainActivity extends AppCompatActivity {
         //linearLayoutManager.setReverseLayout(false);
         //linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        swipeController = new SwipeController(new SwipeControllerActions() {
+            @Override
+            public void onRightClicked(int position) {
+                recyclerViewAdapter.entryList.remove(position);
+                recyclerViewAdapter.notifyItemRemoved(position);
+                recyclerViewAdapter.notifyItemRangeChanged(position, recyclerViewAdapter.getItemCount());
+            }
+        });
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+        itemTouchhelper.attachToRecyclerView(recyclerView);
+
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                swipeController.onDraw(c);
+            }
+        });
 
         // adding our array list to our recycler view adapter class.
         recyclerViewAdapter = new RecyclerViewAdapter(entryList, this);
