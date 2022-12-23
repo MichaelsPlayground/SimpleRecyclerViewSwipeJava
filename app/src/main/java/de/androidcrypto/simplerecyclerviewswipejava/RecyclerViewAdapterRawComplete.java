@@ -1,4 +1,4 @@
-package de.androidcrypto.simplerecyclerviewjava;
+package de.androidcrypto.simplerecyclerviewswipejava;
 
 import android.content.Context;
 import android.view.View;

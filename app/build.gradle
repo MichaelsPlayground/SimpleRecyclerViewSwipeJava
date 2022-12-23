@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    namespace 'de.androidcrypto.simplerecyclerviewjava'
-    compileSdk 32
+    namespace 'de.androidcrypto.simplerecyclerviewswipejava'
+    compileSdk 33
 
     defaultConfig {
-        applicationId "de.androidcrypto.simplerecyclerviewjava"
+        applicationId "de.androidcrypto.simplerecyclerviewswipejava"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 

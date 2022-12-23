@@ -1,11 +1,10 @@
-package de.androidcrypto.simplerecyclerviewjava;
+package de.androidcrypto.simplerecyclerviewswipejava;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,25 +13,25 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 // extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
-public class RecyclerViewAdapter  extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapterRunning extends RecyclerView.Adapter<RecyclerViewAdapterRunning.ViewHolder> {
 
     private List<EntryModel> entryList;
     Context context;
 
-    public RecyclerViewAdapter(List<EntryModel> entryList, Context context) {
+    public RecyclerViewAdapterRunning(List<EntryModel> entryList, Context context) {
         this.entryList = entryList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerViewAdapterRunning.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // step 2 bind the single_entry.xml with our recyclerView
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.single_entry, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerViewAdapterRunning.ViewHolder holder, int position) {
         // step 3 bind the data of each element to a single_entry
         // setting data to our text views from our modal class.
         EntryModel entryModel = entryList.get(position);
@@ -41,18 +40,6 @@ public class RecyclerViewAdapter  extends RecyclerView.Adapter<RecyclerViewAdapt
         holder.entryTitle.setText(entryModel.getTitle());
         holder.entryUrl.setText(entryModel.getUrl());
         holder.entryTimestamp.setText(entryTime);
-
-        // step 5 add a onClickListener
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // do your jobs
-                int actualPosition = holder.getAdapterPosition();
-                Toast.makeText(context,
-                        "click on entry " + actualPosition + " (number - 1)",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -60,8 +47,6 @@ public class RecyclerViewAdapter  extends RecyclerView.Adapter<RecyclerViewAdapt
         // step 4 return the size of our entryList
         return entryList.size();
     }
-
-
 
     // add the inner class ViewHolder manually
     class ViewHolder extends RecyclerView.ViewHolder {

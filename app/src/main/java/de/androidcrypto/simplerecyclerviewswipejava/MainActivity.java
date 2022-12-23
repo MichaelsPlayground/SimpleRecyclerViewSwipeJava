@@ -1,4 +1,4 @@
-package de.androidcrypto.simplerecyclerviewjava;
+package de.androidcrypto.simplerecyclerviewswipejava;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;

@@ -1,2 +1,2 @@
-# Simple RecyclerView in Java
+# Simple RecyclerView Swipe in Java
 
