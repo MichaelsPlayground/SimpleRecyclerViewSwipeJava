@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,4 +77,60 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.d(TAG, "populateEntryList with " + entryList.size() + " elements");
     }
+
+    /*
+    Note: This helper class is designed for left swipe. You can change swipe direction in SwipeHelper's constructor, and making changes based on dX in onChildDraw method accordingly.
+
+If you want to show image in the button, just make the use of imageResId in UnderlayButton, and re-implement the onDraw method.
+
+There is a known bug, when you swipe an item diagonally from one item to another, the first touched item will flash a little. This could be addressed by decreasing the value of getSwipeVelocityThreshold, but this makes harder for user to swipe the item. You can also adjust the swiping feeling by changing two other values in getSwipeThreshold and getSwipeEscapeVelocity. Check into the ItemTouchHelper source code, the comments are very helpful.
+
+I believe there is a lot place for optimization. This solution just gives an idea if you want to stick with ItemTouchHelper. Please let me know if you have problem using it. Below is a screenshot.
+     */
+
+    // https://stackoverflow.com/a/45062745/8166854
+    SwipeHelper swipeHelper = new SwipeHelper(this, recyclerView) {
+        @Override
+        public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+            underlayButtons.add(new SwipeHelper.UnderlayButton(
+                    "Delete",
+                    0,
+                    Color.parseColor("#FF3C30"),
+                    new SwipeHelper.UnderlayButtonClickListener() {
+                        @Override
+                        public void onClick(int pos) {
+                            // TODO: onDelete
+                            System.out.println("*** onDelete");
+                        }
+                    }
+            ));
+
+            underlayButtons.add(new SwipeHelper.UnderlayButton(
+                    "Transfer",
+                    0,
+                    Color.parseColor("#FF9502"),
+                    new SwipeHelper.UnderlayButtonClickListener() {
+                        @Override
+                        public void onClick(int pos) {
+                            // TODO: OnTransfer
+                            System.out.println("*** onTransfer");
+                        }
+                    }
+            ));
+            underlayButtons.add(new SwipeHelper.UnderlayButton(
+                    "Unshare",
+                    0,
+                    Color.parseColor("#C7C7CB"),
+                    new SwipeHelper.UnderlayButtonClickListener() {
+                        @Override
+                        public void onClick(int pos) {
+                            // TODO: OnUnshare
+                            System.out.println("*** onUnshare");
+                        }
+                    }
+            ));
+        }
+    };
+
+
 }
