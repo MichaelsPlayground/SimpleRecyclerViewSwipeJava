@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,9 +24,10 @@ import java.util.Queue;
 
 public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     // https://stackoverflow.com/a/45062745/8166854
+    // this helper adds TEXT as "buttons"
 
     //public static final int BUTTON_WIDTH = YOUR_WIDTH_IN_PIXEL_PER_BUTTON
-    public static final int BUTTON_WIDTH = 100;
+    public static final int BUTTON_WIDTH = 150;
     private RecyclerView recyclerView;
     private List<UnderlayButton> buttons;
     private GestureDetector gestureDetector;
@@ -89,7 +91,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
         attachSwipe();
     }
-
 
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -199,6 +200,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     public abstract void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons);
 
     public static class UnderlayButton {
+        private Context mContext; // new
         private String text;
         private int imageResId;
         private int color;
@@ -206,7 +208,9 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         private RectF clickRegion;
         private UnderlayButtonClickListener clickListener;
 
-        public UnderlayButton(String text, int imageResId, int color, UnderlayButtonClickListener clickListener) {
+        //public UnderlayButton(String text, int imageResId, int color, UnderlayButtonClickListener clickListener) {
+        public UnderlayButton(Context context, String text, int imageResId, int color, UnderlayButtonClickListener clickListener) {
+            this.mContext = context;
             this.text = text;
             this.imageResId = imageResId;
             this.color = color;
@@ -232,8 +236,8 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
             // Draw Text
             p.setColor(Color.WHITE);
             // LayoutHelper is just a helper class covert dp to px. you can search it online
-            //p.setTextSize(LayoutHelper.getPx(MyApplication.getAppContext(), 12));
-            p.setTextSize(14);
+            p.setTextSize(dpToPx(14, mContext));
+            //p.setTextSize(14);
 
             Rect r = new Rect();
             float cHeight = rect.height();
@@ -246,6 +250,10 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
             clickRegion = rect;
             this.pos = pos;
+        }
+
+        public static int dpToPx(float dp, Context context) {
+            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
         }
     }
 

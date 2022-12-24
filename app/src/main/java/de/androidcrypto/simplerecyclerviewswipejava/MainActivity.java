@@ -77,6 +77,7 @@ I believe there is a lot place for optimization. This solution just gives an ide
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        MainActivity.this, // new
                         "Delete",
                         0,
                         Color.parseColor("#FF3C30"),
@@ -90,6 +91,7 @@ I believe there is a lot place for optimization. This solution just gives an ide
                 ));
 
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        MainActivity.this, // new
                         "Transfer",
                         0,
                         Color.parseColor("#FF9502"),
@@ -102,6 +104,7 @@ I believe there is a lot place for optimization. This solution just gives an ide
                         }
                 ));
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        MainActivity.this, // new
                         "Unshare",
                         0,
                         Color.parseColor("#C7C7CB"),
