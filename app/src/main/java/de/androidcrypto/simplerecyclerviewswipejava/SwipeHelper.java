@@ -231,6 +231,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
             // Draw Text
             p.setColor(Color.WHITE);
+            // LayoutHelper is just a helper class covert dp to px. you can search it online
             //p.setTextSize(LayoutHelper.getPx(MyApplication.getAppContext(), 12));
             p.setTextSize(14);
 
