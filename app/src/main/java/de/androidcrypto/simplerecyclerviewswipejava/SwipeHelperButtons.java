@@ -1,6 +1,7 @@
 package de.androidcrypto.simplerecyclerviewswipejava;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -204,16 +205,19 @@ public abstract class SwipeHelperButtons extends ItemTouchHelper.SimpleCallback 
         private Context mContext; // new
         private String text;
         private int imageResId;
+        Bitmap bitmap; // new
         private int color;
         private int pos;
         private RectF clickRegion;
         private UnderlayButtonClickListener clickListener;
 
         //public UnderlayButton(String text, int imageResId, int color, UnderlayButtonClickListener clickListener) {
-        public UnderlayButton(Context context, String text, int imageResId, int color, UnderlayButtonClickListener clickListener) {
+        //public UnderlayButton(Context context, String text, int imageResId, int color, UnderlayButtonClickListener clickListener) {
+        public UnderlayButton(Context context, String text, Bitmap bitmap, int color, UnderlayButtonClickListener clickListener) {
             this.mContext = context;
             this.text = text;
-            this.imageResId = imageResId;
+            //this.imageResId = imageResId;
+            this.bitmap = bitmap;
             this.color = color;
             this.clickListener = clickListener;
         }
@@ -234,20 +238,27 @@ public abstract class SwipeHelperButtons extends ItemTouchHelper.SimpleCallback 
             p.setColor(color);
             c.drawRect(rect, p);
 
+            // Draw Button
+            c.drawBitmap(bitmap, rect.left, rect.top, p);
+
+            // new with text and bitmap
+            // Draw background
+            p.setColor(color);
+            c.drawRect(rect, p);
+
             // Draw Text
             p.setColor(Color.WHITE);
-            // LayoutHelper is just a helper class covert dp to px. you can search it online
-            p.setTextSize(dpToPx(14, mContext));
-            //p.setTextSize(14);
+            p.setTextSize(24);
 
-            Rect r = new Rect();
-            float cHeight = rect.height();
-            float cWidth = rect.width();
-            p.setTextAlign(Paint.Align.LEFT);
-            p.getTextBounds(text, 0, text.length(), r);
-            float x = cWidth / 2f - r.width() / 2f - r.left;
-            float y = cHeight / 2f + r.height() / 2f - r.bottom;
-            c.drawText(text, rect.left + x, rect.top + y, p);
+
+            float spaceHeight = 10; // change to whatever you deem looks better
+            float textWidth = p.measureText(text);
+            Rect bounds = new Rect();
+            p.getTextBounds(text, 0, text.length(), bounds);
+            float combinedHeight = bitmap.getHeight() + spaceHeight + bounds.height();
+            c.drawBitmap(bitmap, rect.centerX() - (bitmap.getWidth() / 2), rect.centerY() - (combinedHeight / 2), null);
+            //If you want text as well with bitmap
+            c.drawText(text, rect.centerX() - (textWidth / 2), rect.centerY() + (combinedHeight / 2), p);
 
             clickRegion = rect;
             this.pos = pos;

@@ -1,12 +1,19 @@
 package de.androidcrypto.simplerecyclerviewswipejava;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -72,7 +79,9 @@ There is a known bug, when you swipe an item diagonally from one item to another
 I believe there is a lot place for optimization. This solution just gives an idea if you want to stick with ItemTouchHelper. Please let me know if you have problem using it. Below is a screenshot.
      */
 
-        // https://stackoverflow.com/a/45062745/8166854
+        /*
+        // https://stackoverflow.com/a/45062745/8166854 by Wenxi Zeng
+        // the SwipeHelper uses a Text for onClick
         SwipeHelper swipeHelper = new SwipeHelper(this, recyclerView) {
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
@@ -119,20 +128,101 @@ I believe there is a lot place for optimization. This solution just gives an ide
             }
         };
 
+         */
+
+        // the SwipeHelperButtons uses an image for onClick
+        // https://stackoverflow.com/a/58763541/8166854 by George
+        SwipeHelperButtons swipeHelperButtons = new SwipeHelperButtons(this, recyclerView) {
+            @Override
+            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+
+                // delete button
+                int idDrawableDelete = R.drawable.ic_baseline_delete_outline_24;
+                Bitmap bitmapDelete = getBitmapFromVectorDrawable(getApplicationContext(), idDrawableDelete);
+                underlayButtons.add(new SwipeHelperButtons.UnderlayButton(
+                        MainActivity.this, // new
+                        "Delete",
+                        bitmapDelete,
+                        Color.parseColor("#FF3C30"),
+                        new SwipeHelperButtons.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                // TODO: onDelete
+                                System.out.println("*** onDelete");
+                            }
+                        }
+                ));
+
+                // edit button
+                int idDrawableEdit = R.drawable.ic_outline_edit_24;
+                Bitmap bitmapEdit = getBitmapFromVectorDrawable(getApplicationContext(), idDrawableEdit);
+                underlayButtons.add(new SwipeHelperButtons.UnderlayButton(
+                        MainActivity.this, // new
+                        "Edit",
+                        bitmapEdit,
+                        Color.parseColor("#FF9502"),
+                        new SwipeHelperButtons.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                // TODO: OnTransfer
+                                System.out.println("*** onEdit");
+                            }
+                        }
+                ));
+
+                // view button
+                int idDrawableView = R.drawable.ic_outline_visibility_24;
+                Bitmap bitmapView = getBitmapFromVectorDrawable(getApplicationContext(), idDrawableView);
+                underlayButtons.add(new SwipeHelperButtons.UnderlayButton(
+                        MainActivity.this, // new
+                        "View",
+                        bitmapView,
+                        // holo green FF99CC00
+                        // light green FFBFFF00
+                        Color.parseColor("#FF99CC00"),
+                        new SwipeHelperButtons.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                // TODO: OnUnshare
+                                System.out.println("*** onView");
+                            }
+                        }
+                ));
+            }
+        };
 
         // solution https://stackoverflow.com/a/45062745/8166854
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeHelper);
+        //ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeHelper);
+        // solution https://stackoverflow.com/a/58763541/8166854
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeHelperButtons);
         itemTouchhelper.attachToRecyclerView(recyclerView);
 
-
-
-
+        // add a line between entries
+        DividerItemDecoration decor = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(decor);
 
         // adding our array list to our recycler view adapter class.
         recyclerViewAdapter = new RecyclerViewAdapter(entryList, this);
 
         // setting adapter to our recycler view.
         recyclerView.setAdapter(recyclerViewAdapter);
+    }
+
+    // https://stackoverflow.com/a/38244327/8166854
+    // from Alexey
+    public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            drawable = (DrawableCompat.wrap(drawable)).mutate();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 
     private void populateEntryList() {

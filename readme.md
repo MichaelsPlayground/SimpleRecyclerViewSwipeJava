@@ -19,3 +19,12 @@ https://www.learnhowtoprogram.com/android/gestures-animations-flexible-uis/imple
 https://github.com/epicodus-lessons/myrestaurants/tree/4.2_updating_data_after_gesture_interactions_v2
 
 sehr interessant: https://stackoverflow.com/a/45062745/8166854
+
+Solution: swipe to left, text based "buttons": https://stackoverflow.com/a/45062745/8166854 by Wenxi Zeng
+
+realised in SwipeHelper.java class
+
+Solution: swipe to left, (vector) image based buttons: https://stackoverflow.com/a/58763541/8166854 by George
+
+realised in SwipeHelperButtons.java class
+
