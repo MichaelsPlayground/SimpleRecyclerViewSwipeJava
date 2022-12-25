@@ -197,9 +197,12 @@ I believe there is a lot place for optimization. This solution just gives an ide
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeHelperButtons);
         itemTouchhelper.attachToRecyclerView(recyclerView);
 
+        /*
+        // if you are using a cardview you do not need a divider
         // add a line between entries
         DividerItemDecoration decor = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(decor);
+        */
 
         // adding our array list to our recycler view adapter class.
         recyclerViewAdapter = new RecyclerViewAdapter(entryList, this);
