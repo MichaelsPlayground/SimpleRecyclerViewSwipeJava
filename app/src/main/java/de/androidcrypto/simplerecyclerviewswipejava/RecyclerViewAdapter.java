@@ -28,7 +28,10 @@ public class RecyclerViewAdapter  extends RecyclerView.Adapter<RecyclerViewAdapt
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // step 2 bind the single_entry.xml with our recyclerView
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.single_entry, parent, false));
+        //return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.single_entry, parent, false));
+
+        return new RecyclerViewAdapter.ViewHolder(LayoutInflater.from(context).inflate(R.layout.single_entry_cardview, parent, false));
+
     }
 
     @Override
